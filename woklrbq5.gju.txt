@@ -1,0 +1,14 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch first-stage-circle
+# Your branch is up-to-date with 'origin/first-stage-circle'.
+#
+# Changes to be committed:
+#	modified:   TODO.md
+#	modified:   package-lock.json
+#	modified:   package.json
+#	modified:   src/App.vue
+#	modified:   src/TimerDot.vue
+#
+

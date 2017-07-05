@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <h1>Some example timer dots</h1>
-    <timer-dot bg-color="rgba(0, 0, 0, 0)" color="blue" size="50px" time="10"></timer-dot>
+    <timer-dot bg-color="rgba(255, 0, 0, 0)" color="blue" :size="50" :duration="5000"></timer-dot>
+    <timer-dot bg-color="rgba(255, 0, 0, 0)" color="rgb(255, 0, 255)" :size="25" :duration="15000"></timer-dot>
     <h2>nllptr @</h2>
     <ul>
       <li><a href="https://twitter.com/nllptr" target="_blank">twitter</a></li>
