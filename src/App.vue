@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <h1>Some example timer dots</h1>
-    <timer-dot bg-color="rgba(255, 0, 0, 0)" color="blue" :size="50" :duration="5000"></timer-dot>
-    <timer-dot bg-color="rgba(255, 0, 0, 0)" color="rgb(255, 0, 255)" :size="25" :duration="15000"></timer-dot>
+    <timer-dot :border-width="3" color="blue" :size="50" :duration="5000" v-on:timerCompleted="restart"></timer-dot>
+    <timer-dot color="rgb(255, 0, 255)" :duration="15000" v-on:timerCompleted="restart"></timer-dot>
     <h2>nllptr @</h2>
     <ul>
       <li><a href="https://twitter.com/nllptr" target="_blank">twitter</a></li>
@@ -18,11 +18,16 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      timer1: 5000
     }
   },
   components: {
     TimerDot
+  },
+  methods: {
+    restart: function(component) {
+      component.restart()
+    }
   }
 }
 </script>

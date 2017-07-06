@@ -1,5 +1,5 @@
 <template>
-<canvas id="timer-dot" :width="size" :height="size" :style="{backgroundColor: bgColor, color: color}"></canvas>
+<canvas id="timer-dot" :width="size" :height="size" :style="{backgroundColor: 'rgba(0, 0, 0, 0)'}"></canvas>
 </template>
 
 <script>
@@ -8,9 +8,26 @@ import TWEEN from '@tweenjs/tween.js'
 export default {
   name: 'timer-dot',
   props: {
-    bgColor: String,
-    color: String,
-    size: Number,
+    bgColor: {
+      type: String,
+      default: '#ccc'
+    },
+    color: {
+      type: String,
+      default: '#fff'
+    },
+    borderColor: {
+      type: String,
+      default: '#000'
+    },
+    borderWidth: {
+      type: Number,
+      default: 0
+    },
+    size: {
+      type: Number,
+      default: 25
+    },
     duration: {
       type: Number,
       required: true
@@ -18,14 +35,32 @@ export default {
   },
   methods: {
     draw: function(tweeningValue) {
-      const radius = parseFloat(this.size) / 2
+      const radius = this.size / 2
       const el = this.$el
       const ctx = this.$el.getContext("2d")
       ctx.clearRect(0, 0, this.size, this.size)
       ctx.translate(radius, radius)
       ctx.rotate(-90 * Math.PI / 180)
+
+      // Background
+      ctx.fillStyle = this.bgColor
       ctx.beginPath()
-      ctx.arc(0, 0, radius, 2 * Math.PI, (tweeningValue / this.duration) * 2 * Math.PI, true)
+      ctx.arc(0, 0, radius, 0, 2 * Math.PI, true)
+      ctx.fill()
+
+      // Border
+      if (this.borderWidth > 0) {
+        ctx.lineWidth = this.borderWidth
+        ctx.strokeStyle = this.borderColor
+        ctx.beginPath()
+        ctx.arc(0, 0, radius - (this.borderWidth / 2), 0, 2 * Math.PI, true)
+        ctx.stroke()
+      }
+
+      // Animated part
+      ctx.fillStyle = this.color
+      ctx.beginPath()
+      ctx.arc(0, 0, radius - this.borderWidth, 2 * Math.PI, (tweeningValue / this.duration) * 2 * Math.PI, true)
       ctx.lineTo(0, 0)
       ctx.fill()
       ctx.setTransform(1, 0, 0, 1, 0, 0)
@@ -49,9 +84,13 @@ export default {
         })
         .onComplete(function() {
           cancelAnimationFrame(animationFrame)
+          vm.$emit('timerCompleted', vm)
         })
         .start()
       animationFrame = requestAnimationFrame(animate)
+    },
+    restart: function() {
+      this.tween(0, this.duration)
     }
   },
   watch: {
@@ -60,8 +99,6 @@ export default {
     }
   },
   mounted: function() {
-    const ctx = this.$el.getContext("2d")
-    ctx.fillStyle = this.color
     this.tween(0, this.duration)
   }
 }
