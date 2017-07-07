@@ -1,5 +1,5 @@
 <template>
-<canvas id="timer-dot" :width="size" :height="size" :style="{backgroundColor: 'rgba(0, 0, 0, 0)'}"></canvas>
+<canvas id="timer-dot" v-show="show" :width="size" :height="size" :style="{backgroundColor: 'rgba(0, 0, 0, 0)'}"></canvas>
 </template>
 
 <script>
@@ -31,6 +31,19 @@ export default {
     duration: {
       type: Number,
       required: true
+    },
+    completionBehavior: {
+      type: Object,
+      default: function() {
+        return {
+          type: "leave"
+        }
+      }
+    }
+  },
+  data: function() {
+    return {
+      show: true
     }
   },
   methods: {
@@ -66,7 +79,7 @@ export default {
       ctx.setTransform(1, 0, 0, 1, 0, 0)
     },
     tween: function(startValue, endValue) {
-      var vm = this
+      var vc = this
       var animationFrame
 
       function animate(time) {
@@ -80,11 +93,19 @@ export default {
           tweeningValue: endValue
         }, this.duration)
         .onUpdate(function() {
-          vm.draw(this.tweeningValue)
+          vc.draw(this.tweeningValue)
         })
         .onComplete(function() {
-          cancelAnimationFrame(animationFrame)
-          vm.$emit('timerCompleted', vm)
+          vc.$emit('timerCompleted', vc)
+          switch (vc.completionBehavior.type) {
+            case "disappear":
+              vc.show = false
+              break
+            case "flash":
+              break
+            default:
+              cancelAnimationFrame(animationFrame)
+          }
         })
         .start()
       animationFrame = requestAnimationFrame(animate)

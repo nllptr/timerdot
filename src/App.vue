@@ -1,14 +1,15 @@
 <template>
-  <div id="app">
-    <h1>Some example timer dots</h1>
-    <timer-dot :border-width="3" color="blue" :size="50" :duration="5000" v-on:timerCompleted="restart"></timer-dot>
-    <timer-dot color="rgb(255, 0, 255)" :duration="15000" v-on:timerCompleted="restart"></timer-dot>
-    <h2>nllptr @</h2>
-    <ul>
-      <li><a href="https://twitter.com/nllptr" target="_blank">twitter</a></li>
-      <li><a href="https://github.com/github" target="_blank">github</a></li>
-    </ul>
-  </div>
+<div id="app">
+  <h1>Some example timer dots</h1>
+  <timer-dot :border-width="3" color="blue" :size="50" :duration="5000" :completionBehavior="timer1Comp"></timer-dot>
+  <timer-dot color="rgb(255, 0, 255)" :duration="15000" v-on:timerCompleted="restart"></timer-dot>
+  <timer-dot color="rgb(66, 175, 42)" bg-color="rgba(0, 0, 0, 0)" :border-width="3" :size="29" :duration="timer3" v-on:timerCompleted="restart"></timer-dot>
+  <h2>nllptr @</h2>
+  <ul>
+    <li><a href="https://twitter.com/nllptr" target="_blank">twitter</a></li>
+    <li><a href="https://github.com/github" target="_blank">github</a></li>
+  </ul>
+</div>
 </template>
 
 <script>
@@ -16,9 +17,13 @@ import TimerDot from './TimerDot.vue'
 
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
-      timer1: 5000
+      timer1: 5000,
+      timer3: 1000 * 60 * 3,
+      timer1Comp: {
+        type: "disappear"
+      }
     }
   },
   components: {
@@ -42,7 +47,8 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
